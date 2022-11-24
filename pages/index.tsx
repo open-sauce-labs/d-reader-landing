@@ -16,13 +16,14 @@ import {
 } from '@mui/material'
 import phoneImage from 'public/assets/phone.png'
 import comingSoonGooglePlayImage from 'public/assets/coming-soon-google-play.png'
-import Image from 'next/image'
+import { Formik, Form, FieldAttributes, FormikTouched, FormikErrors, Field } from 'formik'
 import TextImportant from 'components/TextImportant'
+import WalletButton from 'components/WalletButton'
+import { useAuth } from 'providers/AuthProvider'
+import useToggle from 'hooks/useToggle'
+import Image from 'next/image'
 import { SchemaOf } from 'yup'
 import * as yup from 'yup'
-import { Formik, Form, FieldAttributes, FormikTouched, FormikErrors, Field } from 'formik'
-import { useAuth, useToggle } from '@open-sauce/solomon'
-import WalletButton from 'components/WalletButton'
 
 interface SubscribeRequest {
 	email: string

@@ -1,10 +1,10 @@
-import http from 'api/http'
-import { useAuth } from '@open-sauce/solomon'
-import { walletKeys, WALLET_QUERY_KEYS } from 'api/wallet'
-import { Wallet } from 'models/wallet'
 import { useEffect } from 'react'
 import { useQuery } from 'react-query'
+import { walletKeys, WALLET_QUERY_KEYS } from 'api/wallet'
 import { useToaster } from 'providers/ToastProvider'
+import { useAuth } from 'providers/AuthProvider'
+import { Wallet } from 'models/wallet'
+import http from 'api/http'
 
 const { WALLET, GET, ME } = WALLET_QUERY_KEYS
 
