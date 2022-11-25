@@ -139,11 +139,17 @@
 	.newsletter-checkbox-label {
 		@include flexRow;
 		align-items: center;
+		user-select: none;
+
+		&:hover {
+			cursor: pointer;
+			filter: brightness(0.85);
+		}
 	}
 
 	.newsletter-checkbox-label:not(:last-child) {
-		margin-bottom: 1rem;
 		padding-bottom: 1rem;
+		margin-bottom: 1rem;
 		border-bottom: 2px solid $primary-color-light;
 	}
 }
@@ -165,5 +171,17 @@
 	&:hover {
 		filter: brightness(0.85) !important;
 		background-color: $important-color !important;
+	}
+
+	&:active {
+		background-color: $important-color !important;
+	}
+}
+
+.newsletter-loading {
+	padding: 0.6rem;
+
+	svg {
+		color: $primary-color !important;
 	}
 }

@@ -17,7 +17,7 @@ export const useFetchMe = () => {
 	const { isAuthenticated } = useAuth()
 	const toaster = useToaster()
 
-	const fetchMeQuery = useQuery(walletKeys.getMe(), fetchMe, {
+	const fetchMeQuery = useQuery(walletKeys.getMe, fetchMe, {
 		staleTime: 1000 * 60 * 60 * 24, // Stale for one day
 		enabled: isAuthenticated,
 		onError: toaster.onQueryError,

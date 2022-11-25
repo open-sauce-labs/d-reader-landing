@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import Navigation from 'components/layout/Navigation'
 import Footer from 'components/layout/Footer'
 import Main from 'components/layout/Main'
-import { useFetchApp } from 'api/app'
 import {
 	Box,
 	Button,
@@ -13,6 +12,7 @@ import {
 	StandardTextFieldProps,
 	TextField,
 	Typography,
+	CircularProgress,
 } from '@mui/material'
 import phoneImage from 'public/assets/phone.png'
 import comingSoonGooglePlayImage from 'public/assets/coming-soon-google-play.png'
@@ -21,16 +21,10 @@ import TextImportant from 'components/TextImportant'
 import WalletButton from 'components/WalletButton'
 import { useAuth } from 'providers/AuthProvider'
 import useToggle from 'hooks/useToggle'
+import { SubscribeRequest, useNewsletter } from 'api/newsletter'
 import Image from 'next/image'
 import { SchemaOf } from 'yup'
 import * as yup from 'yup'
-
-interface SubscribeRequest {
-	email: string
-	wantsFreeNFTs: boolean
-	wantsDevelopmentProgressNews: boolean
-	wantsPlatformContentNews: boolean
-}
 
 const validationSchema: SchemaOf<SubscribeRequest> = yup.object({
 	email: yup.string().email('invalid email format').required('email is required'),
@@ -47,10 +41,9 @@ const initialValues: SubscribeRequest = {
 }
 
 const Home: NextPage = () => {
-	useFetchApp()
 	const auth = useAuth()
-	const [subscriptionDetailsOpen, toggleSubscriptionDetails] = useToggle()
-	// const { mutateAsync: subscribe, isLoading } = useNewsletterSubscription()
+	const [subscriptionDetailsOpen, toggleSubscriptionDetails, closeSubscriptionDetails] = useToggle()
+	const { mutateAsync: subscribe, isLoading } = useNewsletter()
 
 	return (
 		<Box className='content'>
@@ -87,18 +80,19 @@ const Home: NextPage = () => {
 							<Hidden mdDown> Help us shape the future of graphic novels and empower artists!</Hidden>
 						</Typography>
 						<Box>
-							<Hidden smDown>
-								<SubscribeLabel />
-							</Hidden>
 							<Formik
 								initialValues={initialValues}
 								validationSchema={validationSchema}
 								onSubmit={async (values) => {
-									console.log('Subscribed!: ', values)
+									if (isLoading) return
+									try {
+										await subscribe(values)
+										closeSubscriptionDetails()
+									} catch {}
 								}}
 							>
 								{({ errors, touched, setFieldTouched, validateForm }) => (
-									<Form noValidate className='newsletter-form'>
+									<Form noValidate id='newsletter-form' className='newsletter-form'>
 										<FormField
 											property='email'
 											label='e-mail'
@@ -114,7 +108,7 @@ const Home: NextPage = () => {
 												type='button'
 												variant='contained'
 												className='button--subscribe'
-												disabled={!auth.isAuthenticated}
+												disabled={!auth.isAuthenticated || isLoading}
 												onClick={async () => {
 													setFieldTouched('email', true)
 													validateForm().then((err: FormikErrors<SubscribeRequest>) => {
@@ -178,16 +172,18 @@ const Home: NextPage = () => {
 												fullWidth
 												className='button--request-access'
 												disabled={!auth.isAuthenticated}
+												form='newsletter-form'
 											>
-												Request Access
+												{isLoading ? <CircularProgress className='newsletter-loading' /> : 'Request Access'}
 											</Button>
 										</Dialog>
 									</Form>
 								)}
 							</Formik>
-							<Hidden smUp>
-								<SubscribeLabel />
-							</Hidden>
+							<Typography className='newsletter-subscribe-label' fontStyle='italic' variant='body2'>
+								<TextImportant>Connect</TextImportant> & <TextImportant>Subscribe</TextImportant> to secure your place
+								as an early adopter and apply for <TextImportant>free NFT drops</TextImportant>
+							</Typography>
 						</Box>
 					</Grid>
 					<Grid item xs={12} sm={5} md={6}>
@@ -256,15 +252,6 @@ const FormCheckboxField: React.FC<FormFieldProps<Omit<SubscribeRequest, 'email'>
 			as={Checkbox}
 			{...props}
 		/>
-	)
-}
-
-const SubscribeLabel = () => {
-	return (
-		<Typography className='newsletter-subscribe-label' fontStyle='italic' variant='body1'>
-			<TextImportant>Connect wallet</TextImportant> and <TextImportant>Subscribe</TextImportant> to secure your place as
-			an early adopter and apply for free NFT drops.
-		</Typography>
 	)
 }
 
