@@ -50,7 +50,7 @@ const Navigation: React.FC<ToolbarProps> = (props) => {
 						keepMounted
 					>
 						<MenuItem onClick={resetMenuAnchorEl}>
-							<Button color='secondary' href='https://twitter.com/dreader' rel='noreferrer' target='_blank'>
+							<Button color='secondary' href='https://twitter.com/JosipVolarevic2' rel='noreferrer' target='_blank'>
 								<TwitterIcon style={{ padding: 3 }} />
 								Twitter
 							</Button>
@@ -68,7 +68,7 @@ const Navigation: React.FC<ToolbarProps> = (props) => {
 					<Button
 						variant='contained'
 						aria-label='twitter'
-						href='https://twitter.com/dreader'
+						href='https://twitter.com/JosipVolarevic2'
 						rel='noreferrer'
 						target='_blank'
 					>

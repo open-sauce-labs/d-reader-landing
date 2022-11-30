@@ -20,7 +20,7 @@ class MyDocument extends Document {
 					/>
 					<meta name='keywords' content='NFT, dReader, Comic, Solana, SOL, mint, collection, manga, manwha' />
 
-					<link rel='manifest' href='%PUBLIC_URL%/manifest.json' />
+					<link rel='manifest' href='/manifest.json' />
 					<link rel='apple-touch-icon' href='/apple-touch-icon.png'></link>
 					<meta name='theme-color' content='#181A20' />
 
