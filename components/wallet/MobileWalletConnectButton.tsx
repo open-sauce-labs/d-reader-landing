@@ -27,7 +27,7 @@ export const MobileWalletConnectButton: FC<MobileWalletConnectButtonProps> = ({
 	const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
 		async (event) => {
 			if (typeof onClick === 'function') onClick(event)
-			if (!event.defaultPrevented)
+			if (!event.defaultPrevented) {
 				try {
 					if (authorizationInProgress) return
 
@@ -42,6 +42,7 @@ export const MobileWalletConnectButton: FC<MobileWalletConnectButtonProps> = ({
 				} finally {
 					setAuthorizationInProgress(false)
 				}
+			}
 		},
 		[onClick, authorizationInProgress, authorizeSession, onAuthorize, selectedAccount]
 	)
